@@ -1,0 +1,25 @@
+{
+  "spellright.language": [
+    "en",
+    "pl"
+  ],
+  "spellright.documentTypes": [
+    "latex",
+    "plaintext"
+  ],
+  "files.exclude": {
+    "node_modules": true,
+    "package-lock.json": true,
+    ".vscode": true,
+    "docs": true
+  },
+  "favorites.resources": [
+    "__src_Gas/libApp/accountsFiles/pasteFinalData.js",
+    "__src_Gas/libApp/accountFiles/pasteFinalData.js",
+    "__src_Gas/libApp/accountFiles/mergeData/_init.js",
+    "__src_Gas/libApp/createAccounts/updateInterface.js",
+    "__src_Gas/tmp/dev.js",
+    "__src_Gas/index.js"
+  ],
+  "favorites.sortOrder": "DESC"
+}
