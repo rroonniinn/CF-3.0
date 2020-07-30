@@ -1,14 +1,9 @@
-import {
-	getProps,
-	setProps,
-} from '../../../../../../00. My Library/v02/gas/properties';
-import { getSheet } from '../../../../../../00. My Library/v02/gas/getSheet';
-
+import { setProps } from '../../../../../../00. My Library/v02/gas/properties';
 import { getFile } from '../../../../../../00. My Library/v02/gas/getFile';
-import { dbAdmin } from '../../config/_config';
 import { paste } from '../../../../../../00. My Library/v02/gas/paste';
 import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
 import { removeRecordFromDb } from '../../../../../../00. My Library/v02/db/removeRecordFromDb';
+import { dataInit } from './dataInit';
 
 const removePrompt = `Podaj fileId konta do usunięcia.
 UWAGA: Konto nie zostanie usunięte z systemu, jeśli transakcje z niego
@@ -18,15 +13,6 @@ oznaczone jako archiwalne
 `;
 
 const ui = SpreadsheetApp.getUi();
-
-const dataInit = () => {
-	const props = getProps('accounts');
-	const sheet = getSheet(dbAdmin.sheet, dbAdmin.ulr);
-	const userData = sheet.getRange(dbAdmin.range).getValues();
-	const dbKeysOrder = userData.slice(0, 1)[0];
-
-	return { props, sheet, userData, dbKeysOrder };
-};
 
 const removeGivenKey = (key, { props, sheet, dbKeysOrder }) => {
 	const index = props.fileId.indexOf(key);
