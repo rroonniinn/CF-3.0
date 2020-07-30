@@ -1,6 +1,9 @@
-import { areValuesUniqe } from '../../../../../00. My Library/v02/arr/areValuesUniqe';
-import { bankEquityTypes } from '../config/_config';
-import { pipe } from '../../../../../00. My Library/v02/fp/pipe';
+import { areValuesUniqe } from '../../../../../../00. My Library/v02/arr/areValuesUniqe';
+import { bankEquityTypes } from '../../config/_config';
+import { pipe } from '../../../../../../00. My Library/v02/fp/pipe';
+import { disp } from '../../../../../../00. My Library/v01/gas/disp';
+
+const attachSatchel = value => ({ value, errors: [] });
 
 /**
  * Sprawdza czy wymagane pola są wypełnione.
@@ -76,19 +79,31 @@ const mandatoryBankCheck = mandatoryKeys => satchel => {
 };
 
 /**
- * Pełna walidacja danych. Oczekuje obiektu typu 'satchel'
+ * Pełna walidacja danych. Oczekuje obiektu typu 'db'
  */
 
-const validateInterfaceData = pipe(
-	mandatoryCheck([
-		'accountType',
-		'equityType',
-		'currency',
-		'displayName',
-		'updateMode',
-	]),
-	mandatoryBankCheck(['bank', 'bankAccountNumber']),
-	uniqnessCheck(['displayName', 'bankAccountNumber'])
-);
+const vaidateDb = (success, failure) => db =>
+	pipe(
+		attachSatchel,
+		mandatoryCheck([
+			'accountType',
+			'equityType',
+			'currency',
+			'displayName',
+			'updateMode',
+		]),
+		mandatoryBankCheck(['bank', 'bankAccountNumber']),
+		uniqnessCheck(['displayName', 'bankAccountNumber']),
+		satchel =>
+			satchel.errors.length
+				? failure(satchel.errors)
+				: success(satchel.value)
+	)(db);
 
-export { validateInterfaceData };
+/**
+ * Obsługa błędu walidacji
+ */
+
+const validationFailed = v => disp(`Errors: ${v.length}. ${v}`);
+
+export { validationFailed, vaidateDb };

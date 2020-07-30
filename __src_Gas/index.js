@@ -1,14 +1,19 @@
 import { setMenu } from '../../../00. My Library/v02/gas/setMenu';
 
-import { updateAccounts } from './App/accounts/updateAccounts';
+import { accountsDataUpdate } from './App/accounts/accountsDataUpdate/accountsDataUpdate';
+import { removeAccount } from './App/accounts/accountsDataUpdate/removeAccount';
 
 // @ts-ignore
 global.pub = {
 	tests: () => {},
-	updateAccounts,
+	accountsDataUpdate,
+	removeAccount,
 };
 
-const menuRegular = [['Aktualizuj konta', 'pub.updateAccounts']];
+const menuRegular = [
+	['Aktualizuj konta', 'pub.accountsDataUpdate'],
+	['Usuń wybrane konto', 'pub.removeAccount'],
+];
 
 const menuDev = [['Update menu', 'onOpen']];
 
