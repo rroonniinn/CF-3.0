@@ -1,17 +1,24 @@
 import { normalizeStr } from '../../../../../../00. My Library/v02/str/normalizeStr';
 import { getRandomStr } from '../../../../../../00. My Library/v02/str/getRandomStr';
 import { copyFile } from '../../../../../../00. My Library/v02/gas/copyFile';
+import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
 import { templates, setup } from '../../config/_config';
 
 const accountFileName = val => (val ? normalizeStr(val) : getRandomStr(8));
 
-const updateNew = db =>
-	db.fileId
+/**
+ * Transfer data taken from dbAdmin (for new accounts)
+ * into new db with additional info
+ * @param {Object<string, array>} db DataBase
+ * @returns {Object<string, array>|null} db DataBase
+ */
+
+const updateNew = db => {
+	const res = db.fileId
 		.map((cell, i) => (cell ? null : i))
 		.filter(i => i !== null)
 		.map(i => ({
 			i,
-			// fileId: accountFileName(obj.bankAccountNumber[i]),
 			fileId: copyFile(
 				templates.account.url,
 				accountFileName(db.bankAccountNumber[i]),
@@ -42,7 +49,6 @@ const updateNew = db =>
 			transIdMax: '-',
 			transTotal: '-',
 			transNotCategoried: '-',
-			// isRemovable: false,
 			isRemovable: true,
 		}))
 		.reduce((newDb, newFilesObj) => {
@@ -51,5 +57,8 @@ const updateNew = db =>
 			);
 			return newDb;
 		}, {});
+
+	return isEmpty(res) ? null : res;
+};
 
 export { updateNew };

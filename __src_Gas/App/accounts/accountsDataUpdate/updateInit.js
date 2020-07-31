@@ -1,57 +1,69 @@
+/* eslint-disable no-irregular-whitespace */
 /* eslint-disable complexity */
-import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
-import { setProps } from '../../../../../../00. My Library/v02/gas/properties';
-import { paste } from '../../../../../../00. My Library/v02/gas/paste';
-import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
 
+import { toast } from '../../../../../../00. My Library/v02/gas-ui/toast';
+
+import { unifyDataEverywhere } from './unifyDataEverywhere';
 import { updateExisting } from './updateExisting';
 import { updateNew } from './updateNew';
+import { updateInitSuccess } from './updateInitSuccess';
 
 const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
-	const newAccounts = updateNew(db);
-	const existingAccounts = updateExisting(db);
+	const existAccounts = updateExisting(db);
 
-	/* eslint-disable */
-	// Wywala się rollup na wyrażeniu const updatedProps = {...props}
-	const updatedProps = Object.assign({}, props );
-	/* eslint-enable */
+	// Errors handling - manually deleted filedIds or whole rows:
 
-	if (!props && isEmpty(existingAccounts)) {
-		setProps('accounts', newAccounts);
-		paste(sheet, 'A2', dbIntoArr(dbKeysOrder, newAccounts), {
-			notRemoveFilers: true,
-			notRemoveEmptys: true,
-		});
-	} else {
-		existingAccounts.fileId.forEach(id => {
-			const i = updatedProps.fileId.indexOf(id);
-			Object.keys(existingAccounts).forEach(
-				key => (updatedProps[key][i] = existingAccounts[key][i])
-			);
-		});
-
-		if (!isEmpty(newAccounts)) {
-			newAccounts.fileId.forEach((id, i) => {
-				Object.keys(newAccounts).forEach(key =>
-					updatedProps[key].push(newAccounts[key][i])
-				);
-			});
-		}
-
-		setProps('accounts', updatedProps);
-		paste(sheet, 'A2', dbIntoArr(dbKeysOrder, updatedProps), {
-			notRemoveFilers: true,
-			notRemoveEmptys: true,
-		});
+	if (props && !existAccounts) {
+		toast(
+			`Ups. Wszystkie wpisy (lub ich fileId) istniejących kont zostały ręcznie usunięte.
+			Stan właściwy został przywrócony.`
+		);
+		unifyDataEverywhere(sheet, props, dbKeysOrder);
+		return;
 	}
+
+	if (props && props.fileId.length !== existAccounts.fileId.length) {
+		toast(`Dla części istniejących kont zostały ręcznie usunięte fileId!
+		Stan właściwy został przywrócony, ale jeśli próbowano wprowadzić nowe konta,
+		ich zapisy zostały usunięte. Dodaj je raz jeszcze.`);
+		unifyDataEverywhere(sheet, props, dbKeysOrder);
+		return;
+	}
+
+	// Don't move this line up or down - this order is crucial
+	const newAccounts = updateNew(db);
+
+	// Other errors handling:
+
+	if (!(props || existAccounts || newAccounts)) {
+		toast('Nie mam nic do dodania - wprowadź jakieś dane');
+		return;
+	}
+
+	if (existAccounts && newAccounts && !props) {
+		toast(
+			`Nic nie dodane. fileId dla części nowych kont zostało wprowadzone ręcznie!
+			Proszę usunąć wpisy dla fileId`
+		);
+		return;
+	}
+
+	if (!(props || newAccounts) && existAccounts) {
+		toast(
+			`Nic nie dodane. fileId dla nowych kont zostało wprowadzone ręcznie!
+			Proszę usunąć wpisy dla fileId`
+		);
+		return;
+	}
+
+	// Success operations:
+	updateInitSuccess(
+		props,
+		existAccounts,
+		newAccounts,
+		sheet,
+		dbKeysOrder
+	);
 };
 
 export { updateInit };
-
-/**
- * index obecny w propsach, ale nie obecny w existingAccounts
- * oznacza wpis do usunięcia:
- * - jeśli klucz 'removable' jest na true to można go usunąć
- * - jeśli klucz 'removable' jest na false to zamias usunięcia
- *   klucz 'isArchives' jest ustawiany na true
- */

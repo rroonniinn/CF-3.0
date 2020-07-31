@@ -2,24 +2,34 @@ import { setMenu } from '../../../00. My Library/v02/gas/setMenu';
 
 import { accountsDataUpdate } from './App/accounts/accountsDataUpdate/accountsDataUpdate';
 import { removeAccount } from './App/accounts/accountsDataUpdate/removeAccount';
-import { checkData } from './App/accounts/accountsDataUpdate/dataInit';
+import { getAccountsProps } from './App/dev/getAccountsProps';
+import { dataInit } from './App/accounts/accountsDataUpdate/dataInit';
 
 // @ts-ignore
 global.pub = {
 	tests: () => {},
 	accountsDataUpdate,
 	removeAccount,
-	checkData,
+	getAccountsProps,
+};
+
+// @ts-ignore
+global.test = {
+	propsAfterPrepare: () => console.log(dataInit().props),
 };
 
 const menuRegular = [
-	['Sprawdź dane', 'pub.checkData'],
-	'---------------',
 	['Aktualizuj konta', 'pub.accountsDataUpdate'],
+	'---------------',
 	['Usuń wybrane konto', 'pub.removeAccount'],
 ];
 
-const menuDev = [['Update menu', 'onOpen']];
+const menuDev = [
+	['Console log Props Accounts', 'pub.getAccountsProps'],
+	['Console log Props Accounts after prepare', 'test.propsAfterPrepare'],
+	'---------------',
+	['Update menu', 'onOpen'],
+];
 
 // @ts-ignore
 global.onOpen = () => {

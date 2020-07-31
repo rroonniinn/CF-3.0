@@ -1,5 +1,14 @@
-const updateExisting = db =>
-	db.fileId
+import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
+
+/**
+ * Transfer data taken from dbAdmin (for existing accounts)
+ * into new db with additional info
+ * @param {Object<string, array>} db DataBase
+ * @returns {Object<string, array>|null} db DataBase
+ */
+
+const updateExisting = db => {
+	const res = db.fileId
 		.map((cell, i) => (cell ? i : null))
 		.filter(i => i !== null)
 		.map(i => ({
@@ -20,5 +29,8 @@ const updateExisting = db =>
 			);
 			return newDb;
 		}, {});
+
+	return isEmpty(res) ? null : res;
+};
 
 export { updateExisting };

@@ -1,9 +1,12 @@
-import { setProps } from '../../../../../../00. My Library/v02/gas/properties';
-import { getFile } from '../../../../../../00. My Library/v02/gas/getFile';
-import { paste } from '../../../../../../00. My Library/v02/gas/paste';
-import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
-import { removeRecordFromDb } from '../../../../../../00. My Library/v02/db/removeRecordFromDb';
+import { trashFile } from '../../../../../../00. My Library/v02/gas/trashFile';
+import { setValue } from '../../../../../../00. My Library/v02/db/setValue';
+import { getValue } from '../../../../../../00. My Library/v02/db/getValue';
+import { getValueIdx } from '../../../../../../00. My Library/v02/db/getValueIdx';
+import { removeRecord } from '../../../../../../00. My Library/v02/db/removeRecord';
+import { toast } from '../../../../../../00. My Library/v02/gas-ui/toast';
+
 import { dataInit } from './dataInit';
+import { unifyDataEverywhere } from './unifyDataEverywhere';
 
 const removePrompt = `Podaj fileId konta do usunięcia.
 UWAGA: Konto nie zostanie usunięte z systemu, jeśli transakcje z niego
@@ -14,34 +17,27 @@ oznaczone jako archiwalne
 
 const ui = SpreadsheetApp.getUi();
 
-const removeGivenKey = (key, { props, sheet, dbKeysOrder }) => {
-	const index = props.fileId.indexOf(key);
+const removeGivenKey = (fileId, { props, sheet, dbKeysOrder }) => {
+	const idx = getValueIdx(props, 'fileId', fileId);
 
-	if (index === -1) {
-		ui.alert(`Key "${key}" DOES NOT EXIST!`);
+	if (idx === -1) {
+		toast(`Key "${fileId}" DOES NOT EXIST!`);
 		return;
 	}
 
-	if (props.isRemovable[index] === false) {
-		props.isArchived[index] = true;
-		setProps('accounts', props);
-		paste(sheet, 'A2', dbIntoArr(dbKeysOrder, props), {
-			notRemoveFilers: true,
-			notRemoveEmptys: true,
-		});
-		ui.alert(`Account "${key}" is not removable. Changed to archived`);
+	if (!getValue(props, 'isRemovable', idx)) {
+		unifyDataEverywhere(
+			sheet,
+			setValue(props, 'isArchived', idx, true),
+			dbKeysOrder
+		);
+		toast(`Account "${fileId}" is not removable. Changed to archived`);
 		return;
 	}
 
-	removeRecordFromDb(index, props);
-	getFile(key).setTrashed(true);
-	setProps('accounts', props);
-	paste(sheet, 'A2', dbIntoArr(dbKeysOrder, props), {
-		notRemoveFilers: true,
-		notRemoveEmptys: true,
-	});
-
-	ui.alert(`Account "${key}" and asociated file were removed`);
+	trashFile(fileId);
+	unifyDataEverywhere(sheet, removeRecord(props, idx), dbKeysOrder);
+	toast(`Account "${fileId}" and asociated file were removed`);
 };
 
 const removeAccount = () => {
