@@ -3,13 +3,13 @@
 
 import { toast } from '../../../../../../00. My Library/v02/gas-ui/toast';
 
-import { unifyDataEverywhere } from './unifyDataEverywhere';
-import { updateExisting } from './updateExisting';
-import { updateNew } from './updateNew';
-import { updateInitSuccess } from './updateInitSuccess';
+import { applyChanges } from './applyChanges';
+import { prepareExisting } from './prepareExisting';
+import { prepareNew } from './prepareNew';
+import { updateSuccess } from './updateSuccess';
 
 const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
-	const existAccounts = updateExisting(db);
+	const existAccounts = prepareExisting(db);
 
 	// Errors handling - manually deleted filedIds or whole rows:
 
@@ -18,7 +18,7 @@ const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
 			`Ups. Wszystkie wpisy (lub ich fileId) istniejących kont zostały ręcznie usunięte.
 			Stan właściwy został przywrócony.`
 		);
-		unifyDataEverywhere(sheet, props, dbKeysOrder);
+		applyChanges(sheet, props, dbKeysOrder);
 		return;
 	}
 
@@ -26,12 +26,12 @@ const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
 		toast(`Dla części istniejących kont zostały ręcznie usunięte fileId!
 		Stan właściwy został przywrócony, ale jeśli próbowano wprowadzić nowe konta,
 		ich zapisy zostały usunięte. Dodaj je raz jeszcze.`);
-		unifyDataEverywhere(sheet, props, dbKeysOrder);
+		applyChanges(sheet, props, dbKeysOrder);
 		return;
 	}
 
 	// Don't move this line up or down - this order is crucial
-	const newAccounts = updateNew(db);
+	const newAccounts = prepareNew(db);
 
 	// Other errors handling:
 
@@ -57,13 +57,7 @@ const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
 	}
 
 	// Success operations:
-	updateInitSuccess(
-		props,
-		existAccounts,
-		newAccounts,
-		sheet,
-		dbKeysOrder
-	);
+	updateSuccess(props, existAccounts, newAccounts, sheet, dbKeysOrder);
 };
 
 export { updateInit };

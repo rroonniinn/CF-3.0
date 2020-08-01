@@ -1,5 +1,5 @@
-import { areValuesUniqe } from '../../../../../../00. My Library/v02/arr/areValuesUniqe';
 import { bankEquityTypes } from '../../config/_config';
+import { areValuesUnique } from '../../../../../../00. My Library/v02/arr/areValuesUnique';
 import { pipe } from '../../../../../../00. My Library/v02/fp/pipe';
 import { disp } from '../../../../../../00. My Library/v01/gas/disp';
 
@@ -29,14 +29,14 @@ const mandatoryCheck = mandatoryKeys => satchel => {
 /**
  * Sprawdza w określonych komunach wartości są unikatowe.
  * Jeśli nie to doczepia do otrzymanego obiektu w kluczu "error"
- * info które kolumny mają powtarzające sie dane
+ * info które kolumny mają powtarzające się dane
  *
  * @param {array} uniqueKeys
  */
 
 const uniqnessCheck = uniqueKeys => satchel => {
 	uniqueKeys
-		.map(key => (areValuesUniqe(satchel.value[key]) ? false : key))
+		.map(key => (areValuesUnique(satchel.value[key]) ? false : key))
 		.filter(errorKey => errorKey)
 		.forEach(errorKey =>
 			satchel.errors.push(`Values in "${errorKey}" are not unique!`)

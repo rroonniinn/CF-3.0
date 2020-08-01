@@ -4,8 +4,8 @@ import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
 /**
  * Correct db taken from props:
  * 1. Changing dates from strings to Data Objects
- * 2. Check whether props have only empty values.
- *		It happens when you delete all, previously existing accounts
+ * 2. Check whether props have only empty values - It happens when you
+ * delete all, previously existing accounts
  *
  * @param {Object<string, any>} propsDb db taken from props
  * @returns {Object<string, any>}

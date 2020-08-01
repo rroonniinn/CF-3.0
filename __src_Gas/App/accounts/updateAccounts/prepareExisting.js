@@ -7,7 +7,7 @@ import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
  * @returns {Object<string, array>|null} db DataBase
  */
 
-const updateExisting = db => {
+const prepareExisting = db => {
 	const res = db.fileId
 		.map((cell, i) => (cell ? i : null))
 		.filter(i => i !== null)
@@ -33,4 +33,4 @@ const updateExisting = db => {
 	return isEmpty(res) ? null : res;
 };
 
-export { updateExisting };
+export { prepareExisting };

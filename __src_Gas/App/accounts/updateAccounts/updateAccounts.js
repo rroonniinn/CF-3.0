@@ -6,7 +6,7 @@ import { dataInit } from './dataInit';
 import { updateInit } from './updateInit';
 import { validationFailed, vaidateDb } from './validation';
 
-const accountsDataUpdate = () => {
+const updateAccounts = () => {
 	const initD = dataInit();
 
 	pipe(
@@ -16,4 +16,4 @@ const accountsDataUpdate = () => {
 	)(initD.userData);
 };
 
-export { accountsDataUpdate };
+export { updateAccounts };

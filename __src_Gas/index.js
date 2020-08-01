@@ -1,14 +1,14 @@
 import { setMenu } from '../../../00. My Library/v02/gas/setMenu';
 
-import { accountsDataUpdate } from './App/accounts/accountsDataUpdate/accountsDataUpdate';
-import { removeAccount } from './App/accounts/accountsDataUpdate/removeAccount';
 import { getAccountsProps } from './App/dev/getAccountsProps';
-import { dataInit } from './App/accounts/accountsDataUpdate/dataInit';
+import { dataInit } from './App/accounts/updateAccounts/dataInit';
+import { removeAccount } from './App/accounts/updateAccounts/removeAccount';
+import { updateAccounts } from './App/accounts/updateAccounts/updateAccounts';
 
 // @ts-ignore
 global.pub = {
 	tests: () => {},
-	accountsDataUpdate,
+	updateAccounts,
 	removeAccount,
 	getAccountsProps,
 };
@@ -19,7 +19,7 @@ global.test = {
 };
 
 const menuRegular = [
-	['Aktualizuj konta', 'pub.accountsDataUpdate'],
+	['Aktualizuj konta', 'pub.updateAccounts'],
 	'---------------',
 	['Usuń wybrane konto', 'pub.removeAccount'],
 ];

@@ -1,19 +1,14 @@
 /* eslint-disable max-params */
 /* eslint-disable complexity */
-import { unifyDataEverywhere } from './unifyDataEverywhere';
 import { toast } from '../../../../../../00. My Library/v02/gas-ui/toast';
-import { successMsg } from './successMsg';
-import { prepareDb } from './prepareDb';
 
-const updateInitSuccess = (
-	propDb,
-	existingDb,
-	newDb,
-	sheet,
-	dbKeysOrder
-) => {
+import { applyChanges } from './applyChanges';
+import { prepareDb } from './prepareDb';
+import { successMsg } from './successMsg';
+
+const updateSuccess = (propDb, existingDb, newDb, sheet, dbKeysOrder) => {
 	if (!(propDb || existingDb) && newDb) {
-		unifyDataEverywhere(sheet, newDb, dbKeysOrder);
+		applyChanges(sheet, newDb, dbKeysOrder);
 		toast(successMsg(existingDb, newDb));
 		return;
 	}
@@ -35,9 +30,9 @@ const updateInitSuccess = (
 			});
 		}
 
-		unifyDataEverywhere(sheet, updatedProps, dbKeysOrder);
+		applyChanges(sheet, updatedProps, dbKeysOrder);
 		toast(successMsg(existingDb, newDb));
 	}
 };
 
-export { updateInitSuccess };
+export { updateSuccess };

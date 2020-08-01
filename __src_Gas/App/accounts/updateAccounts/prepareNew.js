@@ -1,19 +1,20 @@
+import { templates, setup } from '../../config/_config';
 import { normalizeStr } from '../../../../../../00. My Library/v02/str/normalizeStr';
 import { getRandomStr } from '../../../../../../00. My Library/v02/str/getRandomStr';
 import { copyFile } from '../../../../../../00. My Library/v02/gas/copyFile';
 import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
-import { templates, setup } from '../../config/_config';
 
 const accountFileName = val => (val ? normalizeStr(val) : getRandomStr(8));
 
 /**
  * Transfer data taken from dbAdmin (for new accounts)
- * into new db with additional info
+ * into new db with additional info.
+ * Create new files for new accounts.
  * @param {Object<string, array>} db DataBase
  * @returns {Object<string, array>|null} db DataBase
  */
 
-const updateNew = db => {
+const prepareNew = db => {
 	const res = db.fileId
 		.map((cell, i) => (cell ? null : i))
 		.filter(i => i !== null)
@@ -61,4 +62,4 @@ const updateNew = db => {
 	return isEmpty(res) ? null : res;
 };
 
-export { updateNew };
+export { prepareNew };

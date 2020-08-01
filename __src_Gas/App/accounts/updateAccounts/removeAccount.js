@@ -5,8 +5,8 @@ import { getValueIdx } from '../../../../../../00. My Library/v02/db/getValueIdx
 import { removeRecord } from '../../../../../../00. My Library/v02/db/removeRecord';
 import { toast } from '../../../../../../00. My Library/v02/gas-ui/toast';
 
+import { applyChanges } from './applyChanges';
 import { dataInit } from './dataInit';
-import { unifyDataEverywhere } from './unifyDataEverywhere';
 
 const removePrompt = `Podaj fileId konta do usunięcia.
 UWAGA: Konto nie zostanie usunięte z systemu, jeśli transakcje z niego
@@ -26,7 +26,7 @@ const removeGivenKey = (fileId, { props, sheet, dbKeysOrder }) => {
 	}
 
 	if (!getValue(props, 'isRemovable', idx)) {
-		unifyDataEverywhere(
+		applyChanges(
 			sheet,
 			setValue(props, 'isArchived', idx, true),
 			dbKeysOrder
@@ -36,7 +36,7 @@ const removeGivenKey = (fileId, { props, sheet, dbKeysOrder }) => {
 	}
 
 	trashFile(fileId);
-	unifyDataEverywhere(sheet, removeRecord(props, idx), dbKeysOrder);
+	applyChanges(sheet, removeRecord(props, idx), dbKeysOrder);
 	toast(`Account "${fileId}" and asociated file were removed`);
 };
 

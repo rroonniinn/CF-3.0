@@ -1,8 +1,13 @@
+import { dbAdmin } from '../../config/_config';
 import { getProps } from '../../../../../../00. My Library/v02/gas/properties';
 import { getSheet } from '../../../../../../00. My Library/v02/gas/getSheet';
-import { dbAdmin } from '../../config/_config';
+
 import { prepareDb } from './prepareDb';
 
+/**
+ * Initialize data needed during update process
+ * @returns
+ */
 const dataInit = () => {
 	const props = prepareDb(getProps('accounts'));
 	const sheet = getSheet(dbAdmin.sheet, dbAdmin.ulr);

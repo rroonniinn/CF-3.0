@@ -8,7 +8,7 @@ import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
  * @param {*} db
  * @param {array} dbKeysOrder
  */
-const unifyDataEverywhere = (sheet, db, dbKeysOrder) => {
+const applyChanges = (sheet, db, dbKeysOrder) => {
 	setProps('accounts', db);
 	paste(sheet, 'A2', dbIntoArr(dbKeysOrder, db), {
 		notRemoveFilers: true,
@@ -16,4 +16,4 @@ const unifyDataEverywhere = (sheet, db, dbKeysOrder) => {
 	});
 };
 
-export { unifyDataEverywhere };
+export { applyChanges };
