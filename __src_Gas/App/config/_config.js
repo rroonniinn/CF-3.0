@@ -1,3 +1,5 @@
+import { getValueIdxes } from '../../../../../00. My Library/v02/db/getValueIdxes';
+
 /** Tutaj znajdują się ustawienia bazowe oraz metody przekazujące
  * pozyskane na ich bazie dane do dalszego wykorzystania w aplikacji
  */
@@ -7,20 +9,56 @@ const accounts = {
 		id: ['asset', 'liability'],
 		pl: ['Majątek', 'Zobowiązanie'],
 	},
-	equityType: [
-		['id', 'group', 'pl'],
-		['cash', 'other', 'Gotówka'],
-		['bankAccountStand', 'bank', 'Konto ROR'],
-		['bankAccountSave', 'bank', 'Konto Oszczędnościowe'],
-		['bankAccountVat', 'bank', 'Konto VAT'],
-		['bankCreditCard', 'bank', 'Kart Kredytowa'],
-		['bankDeposit', 'bank', 'Lokata'],
-		['capitalInvestment', 'other', 'Inwestycje kapitałowe'],
-		['realEstate', 'other', 'Nieruchomości'],
-		['loan', 'other', 'Pożyczka'],
-		['mortgage', 'bank', 'Kredyt Hipoteczny'],
-		['taxes', 'other', 'Podatki'],
-	],
+	equityType: {
+		id: [
+			'bankAccountStand',
+			'bankAccountSave',
+			'bankAccountVat',
+			'bankCreditCard',
+			'bankDeposit',
+			'mortgage',
+			'cash',
+			'capitalInvestment',
+			'realEstate',
+			'loan',
+			'taxes',
+		],
+		group: [
+			'bank',
+			'bank',
+			'bank',
+			'bank',
+			'bank',
+			'bank',
+			'other',
+			'other',
+			'other',
+			'other',
+			'other',
+		],
+		pl: [
+			'Konto ROR',
+			'Konto Oszczędnościowe',
+			'Konto VAT',
+			'Kart Kredytowa',
+			'Lokata',
+			'Kredyt Hipoteczny',
+			'Gotówka',
+			'Inwestycje kapitałowe',
+			'Nieruchomości',
+			'Pożyczka',
+			'Podatki',
+		],
+	},
+};
+
+/**
+ * Zwraca wartość equityType dla grupy 'bank'
+ */
+
+const bankEquityTypes = () => {
+	const idxs = getValueIdxes(accounts.equityType, 'group', 'bank');
+	return accounts.equityType.id.filter((id, i) => idxs.includes(i));
 };
 
 const templates = {
@@ -44,15 +82,7 @@ const setup = {
 	},
 };
 
-/**
- * Zwraca wartość equityType dla grupy 'bank'
- */
-
-export const bankEquityTypes = () =>
-	accounts.equityType
-		.filter(([, group]) => group === 'bank')
-		.map(([id]) => id);
-
 export const { dbAdmin } = setup;
+export { bankEquityTypes };
 export { templates };
 export { setup };

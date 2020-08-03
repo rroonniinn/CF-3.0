@@ -8,6 +8,19 @@ import { prepareExisting } from './prepareExisting';
 import { prepareNew } from './prepareNew';
 import { updateSuccess } from './updateSuccess';
 
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
+/**
+ * Initialize update process
+ *
+ * @param {Object} param { props, sheet, dbKeysOrder }
+ * @param {accountsDb} param.props
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} param.sheet
+ * @param {array} param.dbKeysOrder
+ * @returns {(db: accountsDb) => void}
+ */
 const updateInit = ({ props, sheet, dbKeysOrder }) => db => {
 	const existAccounts = prepareExisting(db);
 

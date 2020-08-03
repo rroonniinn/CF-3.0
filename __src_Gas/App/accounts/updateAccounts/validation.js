@@ -3,14 +3,31 @@ import { areValuesUnique } from '../../../../../../00. My Library/v02/arr/areVal
 import { pipe } from '../../../../../../00. My Library/v02/fp/pipe';
 import { disp } from '../../../../../../00. My Library/v01/gas/disp';
 
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
+/**
+ * Values for Accounts DB bank
+ * @typedef {Object} Satchel
+ * @property {*} value Wrapped value
+ * @property {string[]} errors Errors messages
+ */
+
+/**
+ * Wrap value into object with error key. Its purpose is to attache
+ * multiple potential errors infos to checked value
+ * @param {*} value
+ * @returns {Satchel}
+ */
 const attachSatchel = value => ({ value, errors: [] });
 
 /**
- * Sprawdza czy wymagane pola są wypełnione.
- * Jeśli nie to doczepia do otrzymanego obiektu w kluczu "error"
- * info które kolumny nie są wypełnione
- *
+ * Checks if required columns have all fields filled.
+ * If not, puts appropriate info about columns with missing values
+ * into 'error' key
  * @param {array} mandatoryKeys
+ * @returns {(satchel: Satchel) => Satchel}
  */
 
 const mandatoryCheck = mandatoryKeys => satchel => {
@@ -27,11 +44,11 @@ const mandatoryCheck = mandatoryKeys => satchel => {
 };
 
 /**
- * Sprawdza w określonych komunach wartości są unikatowe.
- * Jeśli nie to doczepia do otrzymanego obiektu w kluczu "error"
- * info które kolumny mają powtarzające się dane
- *
+ * Checks if required columns have only unique values
+ * If not, puts into 'error' key appropriate info
+ * about columns with duplicated values
  * @param {array} uniqueKeys
+ * @returns {(satchel: Satchel) => Satchel}
  */
 
 const uniqnessCheck = uniqueKeys => satchel => {
@@ -46,12 +63,11 @@ const uniqnessCheck = uniqueKeys => satchel => {
 };
 
 /**
- * Sprawdza czy dla equityType = bank wszystkie wymagane kolumny
- * są wypełnione. Jeśli nie to doczepia do otrzymanego obiektu
- * w kluczu "error"
- * info które kolumny nie są wypełnione
- *
+ * Check if columns containing equityType = bank have all cells filled
+ * If not, puts into 'error' key appropriate info
+ * about columns with duplicated values
  * @param {array} mandatoryKeys
+ * @returns {(satchel: Satchel) => Satchel}
  */
 
 const mandatoryBankCheck = mandatoryKeys => satchel => {
@@ -79,9 +95,22 @@ const mandatoryBankCheck = mandatoryKeys => satchel => {
 };
 
 /**
- * Pełna walidacja danych. Oczekuje obiektu typu 'db'
+ * Validation Success function
+ * @callback validationSuccess
+ * @param {accountsDb} db
+ */
+/**
+ * Validation Failure function
+ * @callback validationFailure
+ * @param {array} error messages
  */
 
+/**
+ * Particular validation stack
+ * @param {validationSuccess} success
+ * @param {validationFailure} failure
+ * @returns {(db: accountsDb) => *}
+ */
 const vaidateDb = (success, failure) => db =>
 	pipe(
 		attachSatchel,
@@ -101,7 +130,7 @@ const vaidateDb = (success, failure) => db =>
 	)(db);
 
 /**
- * Obsługa błędu walidacji
+ * Validation error handling
  */
 
 const validationFailed = v => disp(`Errors: ${v.length}. ${v}`);

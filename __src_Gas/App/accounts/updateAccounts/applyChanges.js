@@ -3,9 +3,13 @@ import { paste } from '../../../../../../00. My Library/v02/gas/paste';
 import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
 
 /**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
+/**
  * Updates props db and dbAdmin with latest data
  * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet Target
- * @param {*} db
+ * @param {accountsDb} db
  * @param {array} dbKeysOrder
  */
 const applyChanges = (sheet, db, dbKeysOrder) => {

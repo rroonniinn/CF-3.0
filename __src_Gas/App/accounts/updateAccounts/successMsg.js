@@ -1,5 +1,9 @@
 /* eslint-disable complexity */
 
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
 const getMsg = (holder, len, prefix) => {
 	if (len === 1) {
 		holder.push(`${prefix} 1 konto.`);
@@ -13,8 +17,8 @@ const getMsg = (holder, len, prefix) => {
 /**
  * Return appropriate success message used after account were
  * added or updated
- * @param {Object<string, array>} existingA db for existing accounts
- * @param {Object<string, array>} newA db for new accounts
+ * @param {accountsDb} existingA db for existing accounts
+ * @param {accountsDb} newA db for new accounts
  * @returns {string} Message
  */
 

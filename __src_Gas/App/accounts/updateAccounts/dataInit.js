@@ -6,7 +6,7 @@ import { prepareDb } from './prepareDb';
 
 /**
  * Initialize data needed during update process
- * @returns
+ * @returns dataInit
  */
 const dataInit = () => {
 	const props = prepareDb(getProps('accounts'));

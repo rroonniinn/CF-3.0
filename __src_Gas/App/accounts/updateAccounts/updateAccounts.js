@@ -6,6 +6,11 @@ import { dataInit } from './dataInit';
 import { updateInit } from './updateInit';
 import { validationFailed, vaidateDb } from './validation';
 
+/**
+ * Central function responsible for applying accounts info from dbAdmin
+ * into the system
+ */
+
 const updateAccounts = () => {
 	const initD = dataInit();
 

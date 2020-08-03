@@ -6,6 +6,21 @@ import { applyChanges } from './applyChanges';
 import { prepareDb } from './prepareDb';
 import { successMsg } from './successMsg';
 
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
+/**
+ * Applying changes to system if data is correct
+ *
+ * @param {accountsDb} propDb db taken from props
+ * @param {accountsDb} existingDb
+ * @param {accountsDb} newDb
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
+ * @param {array} dbKeysOrder
+ * @returns
+ */
+
 const updateSuccess = (propDb, existingDb, newDb, sheet, dbKeysOrder) => {
 	if (!(propDb || existingDb) && newDb) {
 		applyChanges(sheet, newDb, dbKeysOrder);

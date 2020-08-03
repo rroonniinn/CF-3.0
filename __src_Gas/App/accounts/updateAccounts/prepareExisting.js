@@ -1,10 +1,15 @@
+/* eslint-disable max-len */
 import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
+
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
 
 /**
  * Transfer data taken from dbAdmin (for existing accounts)
  * into new db with additional info
- * @param {Object<string, array>} db DataBase
- * @returns {Object<string, array>|null} db DataBase
+ * @param {accountsDb} db DataBase
+ * @returns {accountsDb|null}
  */
 
 const prepareExisting = db => {

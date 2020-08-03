@@ -4,17 +4,21 @@ import { getRandomStr } from '../../../../../../00. My Library/v02/str/getRandom
 import { copyFile } from '../../../../../../00. My Library/v02/gas/copyFile';
 import { isEmpty } from '../../../../../../00. My Library/v02/utils/isEmpty';
 
+/**
+ * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
+ */
+
 const accountFileName = val => (val ? normalizeStr(val) : getRandomStr(8));
+const now = new Date();
 
 /**
  * Transfer data taken from dbAdmin (for new accounts)
  * into new db with additional info.
  * Create new files for new accounts.
- * @param {Object<string, array>} db DataBase
- * @returns {Object<string, array>|null} db DataBase
+ * @param {accountsDb} db DataBase
+ * @returns {accountsDb|null} db DataBase
  */
 
-const now = new Date();
 const prepareNew = db => {
 	const res = db.fileId
 		.map((cell, i) => (cell ? null : i))
