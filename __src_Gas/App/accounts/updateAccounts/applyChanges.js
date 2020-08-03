@@ -1,6 +1,7 @@
 import { setProps } from '../../../../../../00. My Library/v02/gas/properties';
 import { paste } from '../../../../../../00. My Library/v02/gas/paste';
 import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
+import { dbAdmin } from '../../config/_config';
 
 /**
  * @typedef {import('./../../types/accountsDb').accountsDb} accountsDb
@@ -14,10 +15,12 @@ import { dbIntoArr } from '../../../../../../00. My Library/v02/db/dbIntoArr';
  */
 const applyChanges = (sheet, db, dbKeysOrder) => {
 	setProps('accounts', db);
-	paste(sheet, 'A2', dbIntoArr(dbKeysOrder, db), {
+	paste(sheet, dbAdmin.range, dbIntoArr(dbKeysOrder, db), {
 		notRemoveFilers: true,
 		notRemoveEmptys: true,
-	});
+	})
+		.getRange(dbAdmin.updateDate)
+		.setValue(new Date());
 };
 
 export { applyChanges };

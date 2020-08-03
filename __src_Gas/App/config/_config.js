@@ -78,7 +78,8 @@ const setup = {
 		ulr:
 			'https://docs.google.com/spreadsheets/d/1NIqi1h6CIC-WT2yKTXgqJktlZhGnLbgS5HpcFaZs6Rs/edit#gid=1472854783',
 		sheet: 'db',
-		range: 'A2:AA',
+		range: 'A3:AA',
+		updateDate: 'B1',
 	},
 };
 
